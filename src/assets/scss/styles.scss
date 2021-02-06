@@ -82,6 +82,7 @@ form {
 
   .btn {
     font-family: $font-primary;
+    box-shadow: 2px 2px 3px #363636;
     margin: 10px;
   }
 }
@@ -126,4 +127,16 @@ form {
 
 footer {
   font-family: $font-primary;
+}
+
+// loading spinner
+.spinner-container {
+  text-align: center;
+  margin: 100px auto;
+  width: 500px;
+
+  .spinner-border {
+    width: 5rem;
+    height: 5rem;
+  }
 }

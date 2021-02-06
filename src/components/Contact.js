@@ -34,7 +34,7 @@ export const Contact = () => {
         </p>
       </div>
 
-      <footer>&copy; 2020 Raul Duarte</footer>
+      <footer>&copy; 2021 Raul Duarte</footer>
     </div>
   );
 };

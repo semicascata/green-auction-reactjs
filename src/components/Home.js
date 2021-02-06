@@ -1,11 +1,23 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { Link, Redirect } from "react-router-dom";
+import PropTypes from "prop-types";
+import { loginUser, setLoading } from "../redux/actions/auth";
+import Spinner from "../components/layout/Spinner";
 
-export const Home = () => {
+export const Home = ({
+  auth: { errors, isAuth, loading },
+  loginUser,
+  setLoading,
+}) => {
+  // credentials state
   const [user, setUser] = useState({
     name: "",
     password: "",
   });
+
+  // validation
+  const [validation, setValidation] = useState("");
 
   // credentials
   const { name, password } = user;
@@ -18,14 +30,32 @@ export const Home = () => {
   // submit button function
   const submitCredentials = (e) => {
     e.preventDefault();
+    setValidation("");
+
+    // validation
+    if (!name || !password) {
+      setValidation("Please, fill in all fields!");
+    }
 
     // login action
+    setLoading();
+    loginUser(user);
 
     setUser({
       name: "",
       password: "",
     });
   };
+
+  // check if user is authenticate
+  if (isAuth) {
+    return <Redirect to="/contact" />;
+  }
+
+  // loading spinner
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <div className="card">
@@ -35,6 +65,42 @@ export const Home = () => {
             <i className="fas fa-sign-in-alt"></i> Login
           </h2>
         </div>
+
+        {/* check if errors from state */}
+        {errors && (
+          <div
+            className="alert alert-danger alert-dismissible fade show"
+            role="alert"
+          >
+            <strong>Error:</strong> {errors}
+            <button
+              type="button"
+              className="close"
+              data-dismiss="alert"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        )}
+
+        {/* empty fields validation */}
+        {validation && (
+          <div
+            className="alert alert-warning alert-dismissible fade show"
+            role="alert"
+          >
+            <strong>Validation:</strong> {validation}
+            <button
+              type="button"
+              className="close"
+              data-dismiss="alert"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        )}
 
         <div className="form-group">
           <label>
@@ -80,4 +146,14 @@ export const Home = () => {
   );
 };
 
-export default Home;
+Home.propTypes = {
+  auth: PropTypes.object.isRequired,
+  loginUser: PropTypes.func.isRequired,
+  setLoading: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps, { loginUser, setLoading })(Home);
