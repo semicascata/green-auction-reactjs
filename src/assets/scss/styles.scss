@@ -1,1 +1,129 @@
+// bootstrap
 @import "../../../node_modules/bootstrap/scss/bootstrap.scss";
+
+// google fonts
+@import url("https://fonts.googleapis.com/css2?family=Merriweather&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bree+Serif&display=swap");
+
+// global styles
+$font-primary: "Bree Serif", serif;
+$font-secondary: "Merriweather", serif;
+$color-primary: #393b44;
+$color-secondary: #d6e0f0;
+$bg-primary: #f1f3f8;
+$bg-secondary: #16c79a;
+
+body {
+  background-color: $bg-primary;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: $font-primary;
+}
+
+// navbar
+.navbar {
+  font-family: $font-primary;
+}
+
+// login/register
+.card {
+  font-family: $font-primary;
+  margin: 60px auto;
+  width: 350px;
+  box-shadow: 15px 15px 30px #363636;
+}
+
+.card h2 {
+  color: $color-primary;
+}
+
+form {
+  padding: 10px;
+  font-size: 0.9rem;
+}
+
+.auth-title {
+  text-align: center;
+  padding: 10px;
+}
+
+// contact page
+.contact {
+  width: auto;
+  margin: 20px auto 60px;
+  text-align: center;
+  color: $color-primary;
+
+  .me h3 {
+    font-family: $font-primary;
+    margin-bottom: 2px;
+    font-size: 1.8rem;
+  }
+
+  .cardMe {
+    font-family: $font-primary;
+    font-size: 1rem;
+    text-align: center;
+    margin: 18px auto 0;
+    width: 221px;
+  }
+
+  p {
+    margin: 2px auto 0;
+
+    a {
+      text-align: left;
+    }
+  }
+
+  .btn {
+    font-family: $font-primary;
+    margin: 10px;
+  }
+}
+
+// typewriter effect
+.twContainer {
+  margin: 80px auto 20px;
+  display: flex;
+  justify-content: center;
+}
+.twEffect .twText {
+  font-family: $font-primary;
+  font-size: 2.5rem;
+  overflow: hidden;
+  border-right: 0.12em solid #363636;
+  white-space: nowrap;
+  margin: 0 auto;
+  letter-spacing: 0.3em;
+  animation: typing 2s steps(15, end), blink-caret 0.3s step-end infinite;
+}
+
+// typing effect
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+// typewriter cursor effect
+@keyframes blink-caret {
+  from,
+  to {
+    border-color: transparent;
+  }
+  35% {
+    border-color: $color-primary;
+  }
+}
+
+footer {
+  font-family: $font-primary;
+}
