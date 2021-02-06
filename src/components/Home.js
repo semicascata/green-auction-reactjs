@@ -1,15 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
-import { loginUser, setLoading } from "../redux/actions/auth";
+import { loginUser, setLoading, clearErrors } from "../redux/actions/auth";
 import Spinner from "../components/layout/Spinner";
 
 export const Home = ({
   auth: { errors, isAuth, loading },
   loginUser,
   setLoading,
+  clearErrors,
 }) => {
+  useEffect(() => {
+    setTimeout(() => {
+      clearErrors();
+    }, 500);
+  }, [clearErrors]);
+
   // credentials state
   const [user, setUser] = useState({
     name: "",
@@ -34,7 +41,7 @@ export const Home = ({
 
     // validation
     if (!name || !password) {
-      setValidation("Please, fill in all fields!");
+      setValidation("Please, fill in all fields");
     }
 
     // login action
@@ -49,7 +56,7 @@ export const Home = ({
 
   // check if user is authenticate
   if (isAuth) {
-    return <Redirect to="/contact" />;
+    return <Redirect to="/products" />;
   }
 
   // loading spinner
@@ -150,10 +157,13 @@ Home.propTypes = {
   auth: PropTypes.object.isRequired,
   loginUser: PropTypes.func.isRequired,
   setLoading: PropTypes.func.isRequired,
+  clearErrors: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, { loginUser, setLoading })(Home);
+export default connect(mapStateToProps, { loginUser, setLoading, clearErrors })(
+  Home
+);

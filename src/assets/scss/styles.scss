@@ -51,6 +51,52 @@ form {
   padding: 10px;
 }
 
+// products
+.products-container {
+  margin: 30px auto;
+}
+
+.product-card {
+  width: 300px;
+  text-align: center;
+  margin: 10px auto;
+  border-radius: 15px;
+
+  img {
+    margin: 5px auto;
+    width: 100px;
+    height: 100px;
+  }
+}
+
+.new-product {
+  margin: 30px auto;
+  text-align: center;
+
+  .btn {
+    font-family: $font-primary;
+  }
+}
+
+// bids page
+.bids-container {
+  margin: 30px auto;
+  text-align: center;
+
+  .list-group {
+    margin: 10px auto;
+    width: 300px;
+  }
+
+  ul {
+    font-family: $font-secondary;
+  }
+
+  .btn {
+    font-family: $font-primary;
+  }
+}
+
 // contact page
 .contact {
   width: auto;

@@ -1,12 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { signUp, setLoading, clearErrors } from "../../redux/actions/auth";
+import Spinner from "../layout/Spinner";
+import { Redirect, useHistory } from "react-router-dom";
 
-export const Register = () => {
+export const Register = ({
+  auth: { errors, isAuth, loading },
+  signUp,
+  setLoading,
+  clearErrors,
+}) => {
+  useEffect(() => {
+    setTimeout(() => {
+      clearErrors();
+    }, 500);
+  }, [clearErrors]);
+
   const [newUser, setUser] = useState({
     name: "",
-    age: "",
+    age: 18,
     password: "",
     password2: "",
   });
+
+  // validation
+  const [validation, setValidation] = useState("");
 
   // credentials
   const { name, age, password, password2 } = newUser;
@@ -16,19 +35,48 @@ export const Register = () => {
     setUser({ ...newUser, [e.target.name]: e.target.value });
   };
 
+  // history for redirection after signup
+  const history = useHistory();
+
   // submit button function
   const submitSignUp = async (e) => {
     e.preventDefault();
+    setValidation("");
+
+    if (!name || !age || !password || !password2) {
+      setValidation("Please, fill in all fields");
+    }
+
+    if (password !== password2) {
+      setValidation("Passwords dont match");
+    }
 
     // register action
+    setLoading();
+    signUp(newUser).then((res) => {
+      // if the request is ok, will return a response of "true" and then redirect
+      if (res) {
+        history.push("/");
+      }
+    });
 
     setUser({
       name: "",
-      age: "",
+      age: 18,
       password: "",
       password2: "",
     });
   };
+
+  // check if user is authenticate
+  if (isAuth) {
+    return <Redirect to="/contact" />;
+  }
+
+  // loading spinner
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <div className="card">
@@ -38,6 +86,42 @@ export const Register = () => {
             <i className="fas fa-user-plus"></i> Register
           </h2>
         </div>
+
+        {/* check if errors from state */}
+        {errors && (
+          <div
+            className="alert alert-danger alert-dismissible fade show"
+            role="alert"
+          >
+            <strong>Error:</strong> {errors}
+            <button
+              type="button"
+              className="close"
+              data-dismiss="alert"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        )}
+
+        {/* check empty fields */}
+        {validation && (
+          <div
+            className="alert alert-warning alert-dismissible fade show"
+            role="alert"
+          >
+            <strong>Validation:</strong> {validation}
+            <button
+              type="button"
+              className="close"
+              data-dismiss="alert"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        )}
 
         <div className="form-group">
           <label>
@@ -62,10 +146,10 @@ export const Register = () => {
             onChange={changeSignUp}
             placeholder="18"
             value={age}
+            name="age"
             type="number"
             pattern="[0-200]"
             className="form-control"
-            required
           />
         </div>
 
@@ -114,4 +198,17 @@ export const Register = () => {
   );
 };
 
-export default Register;
+Register.propTypes = {
+  auth: PropTypes.object.isRequired,
+  signUp: PropTypes.func.isRequired,
+  setLoading: PropTypes.func.isRequired,
+  clearErrors: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps, { signUp, setLoading, clearErrors })(
+  Register
+);

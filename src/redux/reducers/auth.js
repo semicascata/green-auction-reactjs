@@ -6,6 +6,7 @@ import {
   SIGNUP_SUCCESS,
   SIGNUP_FAIL,
   LOGOUT,
+  CLEAR_ERRORS,
 } from "../types";
 
 const initialState = {
@@ -40,7 +41,14 @@ export default (state = initialState, action) => {
         loading: false,
         errors: null,
       };
+    case SIGNUP_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        errors: null,
+      };
     case LOGIN_FAIL:
+    case SIGNUP_FAIL:
     case LOGOUT:
       localStorage.removeItem("token");
 
@@ -51,6 +59,11 @@ export default (state = initialState, action) => {
         isAuth: false,
         user: null,
         errors: action.payload,
+      };
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        errors: null,
       };
     default:
       return state;
