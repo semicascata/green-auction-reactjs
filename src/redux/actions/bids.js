@@ -55,7 +55,7 @@ export const getBidsPerProduct = (id) => async (dispatch) => {
   setToken(localStorage.getItem("token"));
 
   try {
-    const res = await api.get(`/bids/${id}`);
+    const res = await api.get(`/bids/product/${id}`);
     dispatch({
       type: BIDS_PER_PRODUCT,
       payload: res.data,

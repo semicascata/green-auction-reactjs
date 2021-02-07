@@ -4,6 +4,7 @@ import { fetchProducts, setWait } from "../../redux/actions/products";
 import { connect } from "react-redux";
 import Product from "./Product";
 import { Link } from "react-router-dom";
+import Spinner from "../layout/Spinner";
 
 export const Products = ({
   products: { productsList, errors },
@@ -14,8 +15,8 @@ export const Products = ({
     fetchProducts();
   }, [fetchProducts]);
 
-  if (errors) {
-    console.log(errors);
+  if (productsList[0] === undefined || !productsList) {
+    return <Spinner />;
   }
 
   return (
@@ -27,8 +28,8 @@ export const Products = ({
         </Link>
       </div>
       <div className="row">
-        {productsList.length === 0 ? (
-          <h1>No products to bid today...</h1>
+        {productsList[0] === undefined || productsList[0].length === 0 ? (
+          <h1>No products available for bids today...</h1>
         ) : (
           productsList[0].map((product) => (
             <Product product={product} key={product.id} />

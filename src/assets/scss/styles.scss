@@ -22,6 +22,7 @@ h2,
 h3,
 h4 {
   font-family: $font-primary;
+  text-align: center;
 }
 
 // navbar
@@ -94,6 +95,7 @@ form {
 
   .btn {
     font-family: $font-primary;
+    margin: 10px;
   }
 }
 

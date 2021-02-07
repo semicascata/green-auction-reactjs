@@ -40,10 +40,17 @@ export const addProduct = (formData) => async (dispatch) => {
   setToken(localStorage.getItem("token"));
 
   try {
-    await api.post("/products", formData);
+    const res = await api.post("/products", {
+      product: formData.product,
+      initialBid: +formData.initialBid,
+    });
+
     dispatch({
       type: ADD_PRODUCT,
     });
+
+    console.log(res.data);
+    return true;
   } catch (err) {
     console.log(err.response.data.message);
     dispatch({

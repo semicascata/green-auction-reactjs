@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { getBidsPerProduct, setWait } from "../../redux/actions/bids";
 import NewBid from "./NewBid";
 import Spinner from "../layout/Spinner";
+import Search from "./Search";
 
 export const Bid = ({
   bids: { bidsPerProduct, loading },
@@ -19,7 +20,7 @@ export const Bid = ({
     getBidsPerProduct(idParams.id);
   }, [getBidsPerProduct, setWait, idParams]);
 
-  if (bidsPerProduct[0] === undefined) {
+  if (bidsPerProduct[0] === undefined || !bidsPerProduct) {
     return <Spinner />;
   }
 
@@ -32,10 +33,11 @@ export const Bid = ({
           <li className="list-group-item">No bids for this product yet...</li>
         ) : (
           bidsPerProduct[0]
-            .sort((a, b) => a.bid + b.bid)
+            .sort((a, b) => a.bid_bid + b.bid_bid)
             .map((bid) => (
-              <li className="list-group-item" key={bid.id}>
-                R$ {bid.bid.toFixed(2)}
+              <li className="list-group-item" key={bid.bid_id}>
+                R$ {bid.bid_bid.toFixed(2)}
+                <p>User: {bid.user_name}</p>
               </li>
             ))
         )}
@@ -48,10 +50,18 @@ export const Bid = ({
         >
           New Bid
         </button>
+        <button
+          className="btn btn-success"
+          data-toggle="modal"
+          data-target="#searchBar"
+        >
+          Search Bids Per User
+        </button>
       </div>
 
       {/* modal  */}
       <NewBid />
+      <Search />
     </div>
   );
 };
