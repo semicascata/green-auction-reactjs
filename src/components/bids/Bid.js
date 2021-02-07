@@ -61,7 +61,7 @@ export const Bid = ({
 
       {/* modal  */}
       <NewBid />
-      <Search />
+      <Search bidsList={bidsPerProduct[0]} />
     </div>
   );
 };

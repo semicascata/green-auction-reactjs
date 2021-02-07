@@ -1,17 +1,23 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 
 export const Search = (props) => {
-  console.log(props);
-  // const editSearchTerm = (e) => {
-  //   this.setState({ searchTerm: e.target.value });
-  // };
+  // filter list
+  const [list, setList] = useState([]);
 
-  // const dynamicSearch = () => {
-  //   console.log(this.state.props.user_name);
-  //   return this.state.props.filter((obj) =>
-  //     obj.user_name.toLowerCase().includes(this.state.searchTerm.toLowerCase())
-  //   );
-  // };
+  // array of bids
+  const bidsList = props.bidsList;
+
+  // search term
+  const searchTerm = useRef("");
+
+  const onChange = (e) => {
+    const results = bidsList.filter(
+      (bid) =>
+        bid.user_name.toLowerCase() === searchTerm.current.value.toLowerCase()
+    );
+
+    setList(results);
+  };
 
   return (
     <div
@@ -21,7 +27,7 @@ export const Search = (props) => {
       aria-hidden="true"
     >
       <div className="modal-dialog" role="document">
-        <div className="modal-content">
+        <div className="modal-content search-modal">
           <div className="modal-header">
             <h5 className="modal-title" id="searchBar">
               Search:
@@ -40,16 +46,27 @@ export const Search = (props) => {
               <div className="form-row">
                 <div className="col">
                   <input
-                    // onChange={dynamicSearch}
+                    onChange={onChange}
                     type="text"
                     className="form-control"
                     placeholder="Username"
-                    name="searchTerms"
-                    // value={editSearchTerm}
-                    required
+                    name="searchTerm"
+                    ref={searchTerm}
                   />
                 </div>
               </div>
+              <ul className="list-group">
+                {list.length === 0 || list[0] === null ? (
+                  <li className="list-group-item">Nothing found...</li>
+                ) : (
+                  list.map((bid) => (
+                    <li className="list-group-item" key={bid.bid_id}>
+                      Product: {bid.product_product} | R$ Bid:{" "}
+                      {bid.bid_bid.toFixed(2)}
+                    </li>
+                  ))
+                )}
+              </ul>
             </form>
           </div>
           <div className="modal-footer">
